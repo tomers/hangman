@@ -7,7 +7,7 @@
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/hatch:2": {},
 		"ghcr.io/prulloac/devcontainer-features/pre-commit:1": {}
-	}
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -17,6 +17,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "cd wheel-of-fortune; pip install --verbose --editable . ; pre-commit install --install-hooks"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
