@@ -29,6 +29,9 @@ Documentation = "https://github.com/unknown/wheel-of-fortune#readme"
 Issues = "https://github.com/unknown/wheel-of-fortune/issues"
 Source = "https://github.com/unknown/wheel-of-fortune"
 
+[project.scripts]
+wheel-of-fortune = "wheel_of_fortune.app:main"
+
 [tool.hatch.version]
 path = "src/wheel_of_fortune/__about__.py"
 
