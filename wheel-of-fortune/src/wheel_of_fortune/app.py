@@ -125,8 +125,14 @@ class Player:
 
 
 class Players:
-    def __init__(self) -> None:
-        self._players = [Player("Player 1"), Player("Player 2")]
+    def __init__(self, num_players: int) -> None:
+        self._players = []
+        for i in range(num_players):
+            default_name = f"Player {i + 1}"
+            name = Prompt.ask(
+                f"Please type the name of [b]{default_name}[/b]", default=default_name
+            )
+            self._players.append(Player(name))
 
     def iter(self):
         return cycle(self._players).__iter__()
@@ -142,9 +148,11 @@ class Players:
 
 
 class GamePlay:
-    def __init__(self, words_file: Path, num_rounds: Optional[int] = None):
+    def __init__(
+        self, words_file: Path, num_players: int, num_rounds: Optional[int] = None
+    ):
         self._word_bank = WordBank(words_file=words_file, num_words=num_rounds)
-        self._players = Players()
+        self._players = Players(num_players)
 
     def print_status(self, gw):
         print(Padding(f"{gw}", (1, 1), style="on blue", expand=False))
@@ -194,8 +202,9 @@ def play(
         ),
     ] = None,
     num_rounds: Annotated[int, typer.Option(min=1)] = None,
+    num_players: Annotated[int, typer.Option(min=2)] = 2,
 ):
-    gp = GamePlay(num_rounds=num_rounds, words_file=words_file)
+    gp = GamePlay(num_rounds=num_rounds, num_players=num_players, words_file=words_file)
     gp.play()
 
 
