@@ -1,9 +1,8 @@
 # Wheel of Fortune
 
-[![PyPI - Version](https://img.shields.io/pypi/v/wheel-of-fortune.svg)](https://pypi.org/project/wheel-of-fortune)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/wheel-of-fortune.svg)](https://pypi.org/project/wheel-of-fortune)
+This is a wheel of fortune game in CLI mode.
 
------
+![Exercise](/docs/exercise.png)
 
 **Table of Contents**
 
