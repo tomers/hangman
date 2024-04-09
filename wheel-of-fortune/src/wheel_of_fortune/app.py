@@ -1,10 +1,13 @@
 import random
+from enum import Enum
+from itertools import cycle
+from pathlib import Path
+from typing import Generator
+from typing import Optional
+from typing import Tuple
+
 import typer
 from typing_extensions import Annotated
-from typing import Optional, Generator, Tuple
-from pathlib import Path
-from itertools import cycle
-from enum import Enum
 
 app = typer.Typer()
 
