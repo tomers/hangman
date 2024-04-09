@@ -10,9 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
 keywords = []
-authors = [
-  { name = "Tomer Shalev", email = "shalev.tomer@gmail.com" },
-]
+authors = [{ name = "Tomer Shalev", email = "shalev.tomer@gmail.com" }]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
@@ -35,29 +33,18 @@ Source = "https://github.com/unknown/wheel-of-fortune"
 path = "src/wheel_of_fortune/__about__.py"
 
 [tool.hatch.envs.default]
-dependencies = [
-  "coverage[toml]>=6.5",
-  "pytest",
-]
+dependencies = ["coverage[toml]>=6.5", "pytest"]
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
-cov-report = [
-  "- coverage combine",
-  "coverage report",
-]
-cov = [
-  "test-cov",
-  "cov-report",
-]
+cov-report = ["- coverage combine", "coverage report"]
+cov = ["test-cov", "cov-report"]
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.types]
-dependencies = [
-  "mypy>=1.0.0",
-]
+dependencies = ["mypy>=1.0.0"]
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/wheel_of_fortune tests}"
 
@@ -65,17 +52,14 @@ check = "mypy --install-types --non-interactive {args:src/wheel_of_fortune tests
 source_pkgs = ["wheel_of_fortune", "tests"]
 branch = true
 parallel = true
-omit = [
-  "src/wheel_of_fortune/__about__.py",
-]
+omit = ["src/wheel_of_fortune/__about__.py"]
 
 [tool.coverage.paths]
-wheel_of_fortune = ["src/wheel_of_fortune", "*/wheel-of-fortune/src/wheel_of_fortune"]
+wheel_of_fortune = [
+  "src/wheel_of_fortune",
+  "*/wheel-of-fortune/src/wheel_of_fortune",
+]
 tests = ["tests", "*/wheel-of-fortune/tests"]
 
 [tool.coverage.report]
-exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
-]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
