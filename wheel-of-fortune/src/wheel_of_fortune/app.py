@@ -76,6 +76,7 @@ class GuessedWord:
         self._word = word.lower()
         self._guessed = [False] * len(word)
         self._found_letters = set()
+        self._used_letters = set()
 
     def guess(self, letter: str) -> Tuple[GuessResult, int]:
         if len(letter) != 1 or not letter.isalpha():
@@ -92,12 +93,15 @@ class GuessedWord:
                 result = GuessResult.CORRECT, score
         if all(self._guessed):
             result = GuessResult.WORD_COMPLETE, score
+        self._used_letters.add(letter)
         return result
 
     def __str__(self) -> str:
-        return "".join(
+        word = "".join(
             char if guessed else "-" for char, guessed in zip(self._word, self._guessed)
         )
+        used = ", ".join(sorted(self._used_letters)) if self._used_letters else "None"
+        return f"Word: {word} | Used: {used}"
 
 
 class Player:
@@ -143,7 +147,7 @@ class GamePlay:
         self._players = Players()
 
     def print_status(self, gw):
-        print(Padding(f"Word: {gw}", (1, 1), style="on blue", expand=False))
+        print(Padding(f"{gw}", (1, 1), style="on blue", expand=False))
         print(f"{self._players}")
 
     def play(self):
