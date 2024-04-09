@@ -7,9 +7,18 @@ from typing import Optional
 from typing import Tuple
 
 import typer
+from rich import print
+from rich.console import Console
+from rich.padding import Padding
+from rich.panel import Panel
+from rich.prompt import Prompt
 from typing_extensions import Annotated
 
 app = typer.Typer()
+console = Console()
+
+POSITIVE_STYLE = "green"
+NEGATIVE_STYLE = "red"
 
 
 class WordBank:
@@ -48,13 +57,16 @@ class GuessResult(Enum):
     WORD_COMPLETE = 5
 
     @property
-    def message(self):
+    def message(self) -> Tuple[str, str]:
         return {
-            GuessResult.INVALID: "Invalid guess. Please try again",
-            GuessResult.CORRECT: "Correct guess",
-            GuessResult.INCORRECT: "Incorrect guess",
-            GuessResult.DUPLICATE: "Duplicate guess (already guessed)",
-            GuessResult.WORD_COMPLETE: "Word found!",
+            GuessResult.INVALID: ("Invalid guess. Please try again", NEGATIVE_STYLE),
+            GuessResult.CORRECT: ("Correct guess", POSITIVE_STYLE),
+            GuessResult.INCORRECT: ("Incorrect guess", NEGATIVE_STYLE),
+            GuessResult.DUPLICATE: (
+                "Duplicate guess (already guessed)",
+                NEGATIVE_STYLE,
+            ),
+            GuessResult.WORD_COMPLETE: ("Word found!", POSITIVE_STYLE),
         }[self]
 
 
@@ -84,7 +96,7 @@ class GuessedWord:
 
     def __str__(self) -> str:
         return "".join(
-            char if guessed else "_" for char, guessed in zip(self._word, self._guessed)
+            char if guessed else "-" for char, guessed in zip(self._word, self._guessed)
         )
 
 
@@ -94,7 +106,7 @@ class Player:
         self._score = 0
 
     def __str__(self) -> str:
-        return f"<{self._name} (score: {self._score})>"
+        return f"{self._name} score: {self._score}"
 
     def add_score(self, score: int):
         self._score += score
@@ -131,21 +143,21 @@ class GamePlay:
         self._players = Players()
 
     def print_status(self, gw):
-        print(f"Word: {gw}; Players: {self._players}")
+        print(Padding(f"Word: {gw}", (1, 1), style="on blue", expand=False))
+        print(f"{self._players}")
 
     def play(self):
-        print("Welcome to Hangman!")
+        print(Panel.fit(":game_die: Welcome to Hangman! :game_die:"))
         for i, word in enumerate(self._word_bank.words, 1):
-            print(f"\nRound #{i}/{self._word_bank.word_count}")
+            print(Panel.fit(f"Round #{i}/{self._word_bank.word_count}"))
             gw = GuessedWord(word)
             self.print_status(gw)
             for player in self._players.iter():
                 while True:
-                    print(f"{player.name}, please select a letter")
-                    letter = input()
+                    letter = Prompt.ask(f"[b]{player.name}[/b], please select a letter")
                     res, score = gw.guess(letter)
                     player.add_score(score)
-                    print(res.message)
+                    console.print(res.message[0] + "\n", style=res.message[1])
                     if res in {
                         GuessResult.CORRECT,
                         GuessResult.INCORRECT,
@@ -156,14 +168,14 @@ class GamePlay:
                 if res == GuessResult.WORD_COMPLETE:
                     break
 
-        print("\nGame over!")
+        title = "Game over :partying_face:"
         winners = self._players.winners
         if len(winners) == 1:
-            print(f"{winners[0].name} wins with score {winners[0].score}!")
+            subtitle = f":1st_place_medal: {winners[0].name} wins :1st_place_medal:"
         else:
-            print("It's a tie! Winners:")
-            for winner in winners:
-                print(f"{winner.name} (score: {winner.score})")
+            subtitle = "It's a tie! :people_wrestling:"
+        text = "\n".join(f"{winner.name} (score: {winner.score})" for winner in winners)
+        print(Panel.fit(text, title=title, subtitle=subtitle))
 
 
 @app.command()
