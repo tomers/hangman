@@ -22,7 +22,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = []
+dependencies = ["typer"]
 
 [project.urls]
 Documentation = "https://github.com/unknown/wheel-of-fortune#readme"
@@ -30,7 +30,7 @@ Issues = "https://github.com/unknown/wheel-of-fortune/issues"
 Source = "https://github.com/unknown/wheel-of-fortune"
 
 [project.scripts]
-wheel-of-fortune = "wheel_of_fortune.app:main"
+wheel-of-fortune = "wheel_of_fortune.app:app"
 
 [tool.hatch.version]
 path = "src/wheel_of_fortune/__about__.py"

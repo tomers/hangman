@@ -17,7 +17,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip3 install --user -r requirements.txt",
-	"postCreateCommand": "cd wheel-of-fortune; pip install --verbose --editable . ; pre-commit install --install-hooks",
+	"postCreateCommand": "cd wheel-of-fortune; pip install --verbose --editable . ; wheel-of-fortune --install-completion; pre-commit install --install-hooks",
 
 	// Configure tool-specific properties.
 	// "customizations": {},

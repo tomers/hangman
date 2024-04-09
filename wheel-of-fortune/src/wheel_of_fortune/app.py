@@ -1,8 +1,12 @@
 import random
+import typer
+from typing_extensions import Annotated
 from typing import Optional, Generator, Tuple
 from pathlib import Path
 from itertools import cycle
 from enum import Enum
+
+app = typer.Typer()
 
 
 class WordBank:
@@ -159,10 +163,22 @@ class GamePlay:
                 print(f"{winner.name} (score: {winner.score})")
 
 
-def main():
-    gp = GamePlay()
+@app.command()
+def play(
+    words_file: Annotated[
+        Path,
+        typer.Option(
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+        ),
+    ] = None,
+    num_rounds: Annotated[int, typer.Option(min=1)] = None,
+):
+    gp = GamePlay(num_rounds=num_rounds, words_file=words_file)
     gp.play()
 
 
 if __name__ == "__main__":
-    main()
+    app()
